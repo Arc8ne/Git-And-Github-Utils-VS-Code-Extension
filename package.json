@@ -14,7 +14,7 @@
   "contributes": {
     "commands": [{
       "command": "git-and-github-utilities.helloWorld",
-      "title": "Hello World"
+      "title": "Git and Github Utilities: Hello World"
     }]
   },
   "scripts": {
