@@ -13,8 +13,8 @@
   "main": "./extension.js",
   "contributes": {
     "commands": [{
-      "command": "git-and-github-utilities.helloWorld",
-      "title": "Git and Github Utilities: Hello World"
+      "command": "git-and-github-utilities.versionCheck",
+      "title": "Git and Github Utilities: Check which version of this extension that you have"
     }]
   },
   "scripts": {
