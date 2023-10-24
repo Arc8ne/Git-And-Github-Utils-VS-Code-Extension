@@ -2,6 +2,10 @@ p {
     font-size: 14px;
 }
 
+h1 {
+    margin: 0px;
+}
+
 .horizontal-input-field {
     display: flex;
     flex-direction: row;
@@ -12,6 +16,20 @@ p {
     display: grid;
     grid-template-columns: max-content max-content;
     column-gap: 10px;
+}
+
+.main-body {
+    display: flex;
+    flex-direction: column;
+    row-gap: 10px;
+}
+
+.create-button {
+    align-self: self-start;
+}
+
+.input-grid-checkbox {
+    justify-self: left;
 }
 
 /* VS Code control styles */
@@ -26,6 +44,12 @@ p {
     padding: 4px;
     align-self: center;
     width: 600px;
+}
+
+.vscode-text-field:focus {
+    background-color: var(--vscode-input-option-active-background);
+    border-color: var(--vscode-input-option-active-border);
+    color: var(--vscode-input-option-active-foreground);
 }
 
 .vscode-combo-box {
@@ -49,4 +73,23 @@ p {
     padding: 6px;
     font-family: 'Segoe WPC', 'Segoe UI';
     font-weight: 500;
+    border-radius: 2px;
+}
+
+.vscode-button:hover {
+    background-color: var(--vscode-button-hoverBackground);
+}
+
+.vscode-button:active {
+    background-color: var(--vscode-button-background);
+}
+
+.vscode-checkbox {
+    background-color: var(--vscode-checkbox-background);
+    color: var(--vscode-checkbox-foreground);
+    border-color: var(--vscode-checkbox-border);
+}
+
+.vscode-checkbox:focus {
+    border-color: var(--vscode-checkbox-border);
 }
