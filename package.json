@@ -12,10 +12,16 @@
   "activationEvents": [],
   "main": "./extension.js",
   "contributes": {
-    "commands": [{
-      "command": "git-and-github-utilities.versionCheck",
-      "title": "Git and Github Utilities: Check which version of this extension that you have"
-    }]
+    "commands": [
+      {
+        "command": "git-and-github-utilities.versionCheck",
+        "title": "Git and Github Utilities: Check which version of this extension you have"
+      },
+      {
+        "command": "git-and-github-utilities.createGithubRepo",
+        "title": "Git and Github Utilities: Create a Github repository"
+      }
+    ]
   },
   "scripts": {
     "lint": "eslint .",
@@ -23,14 +29,17 @@
     "test": "node ./test/runTest.js"
   },
   "devDependencies": {
-    "@types/vscode": "^1.83.0",
     "@types/mocha": "^10.0.2",
     "@types/node": "18.x",
+    "@types/vscode": "^1.83.0",
+    "@vscode/test-electron": "^2.3.4",
     "eslint": "^8.50.0",
     "glob": "^10.3.3",
     "mocha": "^10.2.0",
-    "typescript": "^5.2.2",
-    "@vscode/test-electron": "^2.3.4"
+    "typescript": "^5.2.2"
   },
-  "publisher": "Arc8ne"
+  "publisher": "Arc8ne",
+  "dependencies": {
+    "@vscode/webview-ui-toolkit": "^1.2.2"
+  }
 }
