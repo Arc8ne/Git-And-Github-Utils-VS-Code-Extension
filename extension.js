@@ -21,6 +21,21 @@ function getWebviewUri(relativePathToResourceFromExtensionDir, webview, context)
 	return webview.asWebviewUri(getLocalUri(relativePathToResourceFromExtensionDir, context));
 }
 
+function getHTML(relativePathToHTMLFileFromExtensionDir, context, stringReplacements = null)
+{
+	let html = fs.readFileSync(getAbsoluteFilePath(relativePathToHTMLFileFromExtensionDir, context), "utf8");
+
+	if (stringReplacements != null)
+	{
+		for (const stringToReplace in stringReplacements)
+		{
+			html = html.replace(stringToReplace, stringReplacements[stringToReplace]);
+		}
+	}
+
+	return html;
+}
+
 // This method is called when your extension is activated
 // Your extension is activated the very first time the command is executed
 /**
@@ -54,14 +69,12 @@ function activate(context) {
 			}
 		);
 		
-		webviewPanel.webview.html = fs.readFileSync(
-			getAbsoluteFilePath("/gui/create-github-repo-gui/main.html", context),
-			"utf8"
-		).replace(
-			"${mainCSSFileUri}",
-			// getLocalUri("/gui/create-github-repo-gui/main.css", context).toString()
-			// context.extensionPath + "/gui/create-github-repo-gui/main.css"
-			getWebviewUri("/gui/create-github-repo-gui/main.css", webviewPanel.webview, context).toString()
+		webviewPanel.webview.html = getHTML(
+			"/gui/create-github-repo-gui/main.html",
+			context,
+			{
+				"${mainCSSFileUri}": getWebviewUri("/gui/create-github-repo-gui/main.css", webviewPanel.webview, context)
+			}
 		);
 	});
 

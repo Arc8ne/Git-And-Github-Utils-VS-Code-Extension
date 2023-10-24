@@ -1,3 +1,52 @@
+p {
+    font-size: 14px;
+}
+
+.horizontal-input-field {
+    display: flex;
+    flex-direction: row;
+    column-gap: 10px;
+}
+
+.input-grid {
+    display: grid;
+    grid-template-columns: max-content max-content;
+    column-gap: 10px;
+}
+
+/* VS Code control styles */
 .vscode-text-field {
-    background-color: var("--vscode-input-background")
+    background-color: var(--vscode-input-background);
+    border-width: 2px;
+    border-color: var(--vscode-input-border);
+    border-style: solid;
+    border-radius: 6px;
+    color: var(--vscode-input-foreground);
+    font-family: 'Segoe WPC', 'Segoe UI';
+    padding: 4px;
+    align-self: center;
+    width: 600px;
+}
+
+.vscode-combo-box {
+    background-color: var(--vscode-input-background);
+    border-width: 2px;
+    border-color: var(--vscode-input-border);
+    border-style: solid;
+    border-radius: 6px;
+    color: var(--vscode-input-foreground);
+    font-family: 'Segoe WPC', 'Segoe UI';
+    padding: 4px;
+    align-self: center;
+}
+
+.vscode-button {
+    background-color: var(--vscode-button-background);
+    border-width: 2px;
+    border-color: var(--vscode-button-border);
+    border-style: solid;
+    color: var(--vscode-button-foreground);
+    padding: 6px;
+    font-family: 'Segoe WPC', 'Segoe UI';
+    font-weight: 500;
 }
