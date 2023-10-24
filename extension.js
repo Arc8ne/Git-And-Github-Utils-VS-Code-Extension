@@ -68,14 +68,17 @@ function activate(context) {
 				enableScripts: true
 			}
 		);
-		
+
 		webviewPanel.webview.html = getHTML(
 			"/gui/create-github-repo-gui/main.html",
 			context,
 			{
-				"${mainCSSFileUri}": getWebviewUri("/gui/create-github-repo-gui/main.css", webviewPanel.webview, context)
+				"${mainCSSFileUri}": getWebviewUri("/gui/create-github-repo-gui/main.css", webviewPanel.webview, context),
+				"${mainJSFileUri}": getWebviewUri("/gui/create-github-repo-gui/main.js", webviewPanel.webview, context)
 			}
 		);
+		
+		// console.log(webviewPanel.webview.html);
 	});
 
 	context.subscriptions.push(createGithubRepoCommandDisposable);
