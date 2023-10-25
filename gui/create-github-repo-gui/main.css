@@ -32,6 +32,65 @@ h1 {
     justify-self: left;
 }
 
+.header {
+    display: flex;
+    flex-direction: row;
+    margin-top: 10px;
+}
+
+.signed-in-info-container {
+    display: none;
+    flex-direction: row;
+    margin-left: auto;
+    align-items: center;
+    column-gap: 10px;
+}
+
+.sign-in-button {
+    display: block;
+    margin-left: auto;
+    align-items: center;
+}
+
+.sign-in-panel {
+    position: absolute;
+    right: 10px;
+    top: 10px;
+    display: none;
+    margin-left: auto;
+    flex-direction: column;
+    row-gap: 10px;
+    background-color: var(--vscode-input-background);
+    border-color: var(--vscode-input-border);
+    padding: 10px;
+    border-radius: 6px;
+    border-width: 2px;
+    border-style: solid;
+}
+
+.vscode-text-field.personal-access-token-text-field {
+    width: 300px;
+}
+
+.login-button {
+    margin-left: auto;
+}
+
+.keep-me-logged-in-checkbox {
+    justify-self: left;
+}
+
+.signed-in-user-profile-image {
+    width: 32px;
+    height: 32px;
+}
+
+.sign-in-panel-buttons-container {
+    display: flex;
+    flex-direction: row;
+    column-gap: 10px;
+}
+
 /* VS Code control styles */
 .vscode-text-field {
     background-color: var(--vscode-input-background);

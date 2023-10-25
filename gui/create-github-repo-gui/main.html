@@ -5,25 +5,37 @@
 
     <body>
         <div class="main-body">
-            <h1>Create a Github repository</h1>
+            <div class="header">
+                <h1>Create a Github repository</h1>
 
-            <!--
-            <div class="horizontal-input-field">
-                <p>Repository name:</p>
+                <div id="signInInfoContainer" class="signed-in-info-container">
+                    <img id="signedInUserProfileImage" class="signed-in-user-profile-image"/>
 
-                <input class="vscode-text-field"/>
+                    <p id="signedInAsLabel">Signed in as User</p>
+
+                    <button id="logoutButton" class="vscode-button">Log out</button>
+                </div>
+
+                <button id="signInButton" class="sign-in-button vscode-button">Sign in to a Github account</button>
+
+                <div id="signInPanel" class="sign-in-panel">
+                    <div class="input-grid">
+                        <p>Personal access token:</p>
+
+                        <input id="personalAccessTokenInput" class="vscode-text-field personal-access-token-text-field"/>
+
+                        <p>Keep me logged in</p>
+
+                        <input type="checkbox" class="vscode-combo-box keep-me-logged-in-checkbox"/>
+                    </div>
+
+                    <div class="sign-in-panel-buttons-container">
+                        <button id="loginButton" class="login-button vscode-button">Log in</button>
+
+                        <button id="closeSignInPanelButton" class="vscode-button">Close</button>
+                    </div>
+                </div>
             </div>
-
-            <div class="horizontal-input-field">
-                <p>Repository publicity:</p>
-
-                <select class="vscode-combo-box">
-                    <option>Private</option>
-
-                    <option>Public</option>
-                </select>
-            </div>
-            -->
 
             <div class="input-grid">
                 <p>Repository name:</p>
@@ -50,6 +62,6 @@
             <button id="createRepoButton" class="vscode-button create-button">Create</button>
         </div>
 
-        <script src="${mainJSFileUri}"></script>
+        <script type="module" src="${mainJSFileUri}"></script>
     </body>
 </html>

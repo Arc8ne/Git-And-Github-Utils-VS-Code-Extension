@@ -82,12 +82,8 @@ function activate(context) {
 		{
 			switch (message.command)
 			{
-				case "showCreatingRepoPrompt":
-					vscode.window.showInformationMessage("Creating the Github repository. Please wait...");
-
-					break;
-				case "showCreatedRepoPrompt":
-					vscode.window.showInformationMessage("Github repository created successfully.");
+				case "ShowInfoMsg":
+					vscode.window.showInformationMessage(message.msgText);
 
 					break;
 				default:
