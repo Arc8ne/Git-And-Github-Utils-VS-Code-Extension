@@ -77,6 +77,23 @@ function activate(context) {
 				"${mainJSFileUri}": getWebviewUri("/gui/create-github-repo-gui/main.js", webviewPanel.webview, context)
 			}
 		);
+
+		webviewPanel.webview.onDidReceiveMessage((message) =>
+		{
+			switch (message.command)
+			{
+				case "showCreatingRepoPrompt":
+					vscode.window.showInformationMessage("Creating the Github repository. Please wait...");
+
+					break;
+				case "showCreatedRepoPrompt":
+					vscode.window.showInformationMessage("Github repository created successfully.");
+
+					break;
+				default:
+					break;
+			}
+		});
 		
 		// console.log(webviewPanel.webview.html);
 	});
