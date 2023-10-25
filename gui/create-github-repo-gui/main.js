@@ -47,7 +47,7 @@ function onSignInButtonClick()
 
 async function onLoginButtonClick()
 {
-    octokit = setOctokit(
+    setOctokit(
         new Octokit(
             {
                 auth: personalAccessTokenInput.value
@@ -74,6 +74,13 @@ async function onLoginButtonClick()
 
         return;
     }
+
+    vsCodeApi.postMessage(
+        {
+            command: "OnGithubAccountLoggedInTo",
+            userName: userPublicInfo.data.login
+        }
+    );
 
     signedInAsLabel.innerText = "Signed in as " + userPublicInfo.data.login;
 

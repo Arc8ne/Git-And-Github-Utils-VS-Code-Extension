@@ -6,6 +6,10 @@ const fs = require("fs");
 
 const currentVersion = "0.1.0";
 
+let extensionDataDirAbsolutePath = "";
+
+let githubAccountsDirAbsolutePath = "";
+
 function getAbsoluteFilePath(relativePathToResourceFromExtensionDir, context)
 {
 	return context.extensionPath + relativePathToResourceFromExtensionDir;
@@ -42,10 +46,23 @@ function getHTML(relativePathToHTMLFileFromExtensionDir, context, stringReplacem
  * @param {vscode.ExtensionContext} context
  */
 function activate(context) {
+	extensionDataDirAbsolutePath = context.extensionPath + "/extension-data";
+
+	githubAccountsDirAbsolutePath = extensionDataDirAbsolutePath + "/github-accounts";
 
 	// Use the console to output diagnostic information (console.log) and errors (console.error)
 	// This line of code will only be executed once when your extension is activated
 	console.log('The extension "git-and-github-utilities" is now active!');
+
+	if (fs.existsSync(extensionDataDirAbsolutePath) == false)
+	{
+		fs.mkdirSync(extensionDataDirAbsolutePath);
+	}
+
+	if (fs.existsSync(githubAccountsDirAbsolutePath) == false)
+	{
+		fs.mkdirSync(githubAccountsDirAbsolutePath);
+	}
 
 	// The command has been defined in the package.json file
 	// Now provide the implementation of the command with  registerCommand
@@ -84,6 +101,15 @@ function activate(context) {
 			{
 				case "ShowInfoMsg":
 					vscode.window.showInformationMessage(message.msgText);
+
+					break;
+				case "OnGithubAccountLoggedInTo":
+					let correspondingGithubAccountDirAbsolutePath = githubAccountsDirAbsolutePath + "/" + message.userName;
+			
+					if (fs.existsSync(correspondingGithubAccountDirAbsolutePath) == false)
+					{
+						fs.mkdirSync(correspondingGithubAccountDirAbsolutePath);
+					}
 
 					break;
 				default:
