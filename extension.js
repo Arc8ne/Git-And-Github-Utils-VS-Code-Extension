@@ -50,8 +50,6 @@ function generateSSHKeyPairForGithubAccount(githubAccountName, options)
 
 	let correspondingGithubAccountSSHPrivateKeyFileAbsolutePath = correspondingGithubAccountDirAbsolutePath + "/" + githubAccountName;
 
-	let correspondingGithubAccountSSHPublicKeyFileAbsolutePath = correspondingGithubAccountSSHPrivateKeyFileAbsolutePath + ".pub";
-
 	if (options == undefined)
 	{
 		options = {
