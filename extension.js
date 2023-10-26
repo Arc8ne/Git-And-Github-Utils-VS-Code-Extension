@@ -4,6 +4,10 @@ const vscode = require('vscode');
 
 const fs = require("fs");
 
+const childProcess = require("child_process");
+
+const sshKeygen = require("ssh-keygen");
+
 const currentVersion = "0.1.0";
 
 let extensionDataDirAbsolutePath = "";
@@ -38,6 +42,29 @@ function getHTML(relativePathToHTMLFileFromExtensionDir, context, stringReplacem
 	}
 
 	return html;
+}
+
+function generateSSHKeyPairForGithubAccount(githubAccountName, options)
+{
+	let correspondingGithubAccountDirAbsolutePath = githubAccountsDirAbsolutePath + "/" + githubAccountName;
+
+	let correspondingGithubAccountSSHPrivateKeyFileAbsolutePath = correspondingGithubAccountDirAbsolutePath + "/" + githubAccountName;
+
+	let correspondingGithubAccountSSHPublicKeyFileAbsolutePath = correspondingGithubAccountSSHPrivateKeyFileAbsolutePath + ".pub";
+
+	if (options == undefined)
+	{
+		options = {
+			type: "rsa",
+			numBits: 2048,
+			password: "",
+			format: "PEM"
+		};
+	}
+
+	childProcess.exec(
+		`ssh-keygen -t ${options.type} -b ${options.numBits} -C "${githubAccountName}" -N "${options.password}" -m ${options.format} -f "${correspondingGithubAccountSSHPrivateKeyFileAbsolutePath}"`
+	);
 }
 
 // This method is called when your extension is activated
@@ -109,6 +136,15 @@ function activate(context) {
 					if (fs.existsSync(correspondingGithubAccountDirAbsolutePath) == false)
 					{
 						fs.mkdirSync(correspondingGithubAccountDirAbsolutePath);
+					}
+
+					let correspondingGithubAccountSSHPrivateKeyFileAbsolutePath = correspondingGithubAccountDirAbsolutePath + "/" + message.userName;
+
+					let correspondingGithubAccountSSHPublicKeyFileAbsolutePath = correspondingGithubAccountDirAbsolutePath + "/" + message.userName + ".pub";
+
+					if (fs.existsSync(correspondingGithubAccountSSHPrivateKeyFileAbsolutePath) == false || fs.existsSync(correspondingGithubAccountSSHPublicKeyFileAbsolutePath) == false)
+					{
+						generateSSHKeyPairForGithubAccount(message.userName);
 					}
 
 					break;
