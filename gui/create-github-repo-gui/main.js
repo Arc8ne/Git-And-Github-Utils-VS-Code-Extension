@@ -78,7 +78,8 @@ async function onLoginButtonClick()
     vsCodeApi.postMessage(
         {
             command: "OnGithubAccountLoggedInTo",
-            userName: userPublicInfo.data.login
+            userName: userPublicInfo.data.login,
+            personalAccessToken: personalAccessTokenInput.value
         }
     );
 
@@ -109,6 +110,21 @@ function onCloseSignInPanelButtonClick()
 
 function main()
 {
+    window.addEventListener("message", (event) =>
+    {
+        let message = event.data;
+
+        switch (message.command)
+        {
+            case "SignInSectionLoaded":
+
+
+                break;
+            default:
+                break;
+        }
+    });
+
     createRepoButton.addEventListener("click", onCreateRepoButtonClick);
 
     signInButton.addEventListener("click", onSignInButtonClick);
@@ -120,6 +136,12 @@ function main()
     closeSignInPanelButton.addEventListener("click", onCloseSignInPanelButtonClick);
 
     setOctokit(null);
+
+    vsCodeApi.postMessage(
+        {
+            command: "SignInSectionLoaded"
+        }
+    );
 }
 
 const vsCodeApi = acquireVsCodeApi();
@@ -145,6 +167,8 @@ const signInInfoContainer = document.getElementById("signInInfoContainer");
 const logoutButton = document.getElementById("logoutButton");
 
 const closeSignInPanelButton = document.getElementById("closeSignInPanelButton");
+
+const accountSelectionContainer = document.getElementById("accountSelectionContainer");
 
 main();
 

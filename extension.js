@@ -128,6 +128,26 @@ function activate(context) {
 					vscode.window.showInformationMessage(message.msgText);
 
 					break;
+				case "SignInSectionLoaded":
+					let githubAccountDirs = fs.readdirSync(
+						githubAccountsDirAbsolutePath,
+						{
+							withFileTypes: true
+						}
+					);
+
+					for (const githubAccountDir in githubAccountDirs)
+					{
+						console.log(githubAccountDir);
+					}
+
+					webviewPanel.webview.postMessage(
+						{
+							command: "SignInSectionLoaded"
+						}
+					);
+
+					break;
 				case "OnGithubAccountLoggedInTo":
 					let correspondingGithubAccountDirAbsolutePath = githubAccountsDirAbsolutePath + "/" + message.userName;
 			
@@ -135,6 +155,21 @@ function activate(context) {
 					{
 						fs.mkdirSync(correspondingGithubAccountDirAbsolutePath);
 					}
+
+					let correspondingGithubAccountInfoFileAbsolutePath = correspondingGithubAccountDirAbsolutePath + "/info.json";
+
+					let githubAccountInfo = {
+						userName: message.userName,
+						personalAccessToken: message.personalAccessToken
+					};
+
+					fs.writeFileSync(
+						correspondingGithubAccountInfoFileAbsolutePath,
+						JSON.stringify(githubAccountInfo),
+						{
+							flag: "w"
+						}
+					);
 
 					let correspondingGithubAccountSSHPrivateKeyFileAbsolutePath = correspondingGithubAccountDirAbsolutePath + "/" + message.userName;
 

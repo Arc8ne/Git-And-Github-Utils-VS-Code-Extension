@@ -91,6 +91,14 @@ h1 {
     column-gap: 10px;
 }
 
+.or-divider-text-cell {
+    width: 1px;
+    padding: 0px 4px;
+    white-space: nowrap;
+    position: relative;
+    top: -2px;
+}
+
 /* VS Code control styles */
 .vscode-text-field {
     background-color: var(--vscode-input-background);
