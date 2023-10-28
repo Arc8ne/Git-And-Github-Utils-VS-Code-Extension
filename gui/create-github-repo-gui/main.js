@@ -45,12 +45,12 @@ function onSignInButtonClick()
     signInButton.style["display"] = "none";
 }
 
-async function onLoginButtonClick()
+async function login(personalAccessToken)
 {
     setOctokit(
         new Octokit(
             {
-                auth: personalAccessTokenInput.value
+                auth: personalAccessToken
             }
         )
     );
@@ -79,7 +79,7 @@ async function onLoginButtonClick()
         {
             command: "OnGithubAccountLoggedInTo",
             userName: userPublicInfo.data.login,
-            personalAccessToken: personalAccessTokenInput.value
+            personalAccessToken: personalAccessToken
         }
     );
 
@@ -92,6 +92,27 @@ async function onLoginButtonClick()
     signInPanel.style["display"] = "none";
 
     signInInfoContainer.style["display"] = "flex";
+}
+
+function onLoginButtonClick()
+{
+    let personalAccessTokenToUse = "";
+    
+    if (githubAccountSelectInput.options[githubAccountSelectInput.options.selectedIndex].text == DEFAULT_GITHUB_ACCOUNT_SELECT_INPUT_OPTION)
+    {
+        personalAccessTokenToUse = personalAccessTokenInput.value;
+
+        login(personalAccessTokenToUse);
+    }
+    else
+    {
+        vsCodeApi.postMessage(
+            {
+                command: "LoginToCachedGithubAccount",
+                githubAccountUserName: githubAccountSelectInput.options[githubAccountSelectInput.options.selectedIndex].text
+            }
+        );
+    }
 }
 
 function onLogoutButtonClick()
@@ -128,6 +149,7 @@ function main()
         switch (message.command)
         {
             case "UpdateSignInSection":
+            {
                 if (message.foundGithubAccountNames.length > 0)
                 {
                     accountSelectionContainer.style["display"] = "block";
@@ -155,8 +177,17 @@ function main()
                 });
 
                 break;
-            default:
+            }
+            case "LoginToCachedGithubAccountResponse":
+            {
+                login(message.personalAccessToken);
+
                 break;
+            }
+            default:
+            {
+                break;
+            }
         }
     });
 

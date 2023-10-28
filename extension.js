@@ -102,7 +102,7 @@ function activate(context) {
 	context.subscriptions.push(versionCheckCommandDisposable);
 
 	let createGithubRepoCommandDisposable = vscode.commands.registerCommand("git-and-github-utilities.createGithubRepo", function () {
-		let webviewPanel = vscode.window.createWebviewPanel(
+		let createGithubRepoWebviewPanel = vscode.window.createWebviewPanel(
 			"createGithubRepo",
 			"Create a Github repository",
 			vscode.ViewColumn.One,
@@ -111,24 +111,27 @@ function activate(context) {
 			}
 		);
 
-		webviewPanel.webview.html = getHTML(
+		createGithubRepoWebviewPanel.webview.html = getHTML(
 			"/gui/create-github-repo-gui/main.html",
 			context,
 			{
-				"${mainCSSFileUri}": getWebviewUri("/gui/create-github-repo-gui/main.css", webviewPanel.webview, context),
-				"${mainJSFileUri}": getWebviewUri("/gui/create-github-repo-gui/main.js", webviewPanel.webview, context)
+				"${mainCSSFileUri}": getWebviewUri("/gui/create-github-repo-gui/main.css", createGithubRepoWebviewPanel.webview, context),
+				"${mainJSFileUri}": getWebviewUri("/gui/create-github-repo-gui/main.js", createGithubRepoWebviewPanel.webview, context)
 			}
 		);
 
-		webviewPanel.webview.onDidReceiveMessage((message) =>
+		createGithubRepoWebviewPanel.webview.onDidReceiveMessage((message) =>
 		{
 			switch (message.command)
 			{
 				case "ShowInfoMsg":
+				{
 					vscode.window.showInformationMessage(message.msgText);
 
 					break;
+				}
 				case "UpdateSignInSection":
+				{
 					let githubAccountDirs = fs.readdirSync(
 						githubAccountsDirAbsolutePath,
 						{
@@ -143,7 +146,7 @@ function activate(context) {
 						namesOfGithubAccountsFound.push(folderChild.name);
 					});
 
-					webviewPanel.webview.postMessage(
+					createGithubRepoWebviewPanel.webview.postMessage(
 						{
 							command: "UpdateSignInSection",
 							foundGithubAccountNames: namesOfGithubAccountsFound
@@ -151,7 +154,9 @@ function activate(context) {
 					);
 
 					break;
+				}
 				case "OnGithubAccountLoggedInTo":
+				{
 					let correspondingGithubAccountDirAbsolutePath = githubAccountsDirAbsolutePath + "/" + message.userName;
 			
 					if (fs.existsSync(correspondingGithubAccountDirAbsolutePath) == false)
@@ -184,12 +189,38 @@ function activate(context) {
 					}
 
 					break;
-				default:
+				}
+				case "LoginToCachedGithubAccount":
+				{
+					let githubAccountDirs = fs.readdirSync(githubAccountsDirAbsolutePath);
+					
+					githubAccountDirs.forEach((githubAccountDirName) =>
+					{
+						if (githubAccountDirName == message.githubAccountUserName)
+						{
+							let githubAccountInfo = JSON.parse(
+								fs.readFileSync(
+									githubAccountsDirAbsolutePath + "/" + githubAccountDirName + "/info.json"
+								)
+							);
+
+							createGithubRepoWebviewPanel.webview.postMessage(
+								{
+									command: "LoginToCachedGithubAccountResponse",
+									personalAccessToken: githubAccountInfo.personalAccessToken
+								}
+							);
+						}
+					});
+
 					break;
+				}
+				default:
+				{
+					break;
+				}
 			}
 		});
-		
-		// console.log(webviewPanel.webview.html);
 	});
 
 	context.subscriptions.push(createGithubRepoCommandDisposable);
