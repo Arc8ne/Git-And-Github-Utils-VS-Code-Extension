@@ -128,7 +128,7 @@ function activate(context) {
 					vscode.window.showInformationMessage(message.msgText);
 
 					break;
-				case "SignInSectionLoaded":
+				case "UpdateSignInSection":
 					let githubAccountDirs = fs.readdirSync(
 						githubAccountsDirAbsolutePath,
 						{
@@ -136,14 +136,17 @@ function activate(context) {
 						}
 					);
 
-					for (const githubAccountDir in githubAccountDirs)
+					let namesOfGithubAccountsFound = [];
+
+					githubAccountDirs.forEach((folderChild) =>
 					{
-						console.log(githubAccountDir);
-					}
+						namesOfGithubAccountsFound.push(folderChild.name);
+					});
 
 					webviewPanel.webview.postMessage(
 						{
-							command: "SignInSectionLoaded"
+							command: "UpdateSignInSection",
+							foundGithubAccountNames: namesOfGithubAccountsFound
 						}
 					);
 

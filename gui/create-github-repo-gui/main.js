@@ -87,6 +87,8 @@ async function onLoginButtonClick()
 
     signedInUserProfileImage.src = userPublicInfo.data.avatar_url;
 
+    updateAccountSelectionContainer();
+
     signInPanel.style["display"] = "none";
 
     signInInfoContainer.style["display"] = "flex";
@@ -108,6 +110,15 @@ function onCloseSignInPanelButtonClick()
     signInButton.style["display"] = "block";
 }
 
+function updateAccountSelectionContainer()
+{
+    vsCodeApi.postMessage(
+        {
+            command: "UpdateSignInSection"
+        }
+    );
+}
+
 function main()
 {
     window.addEventListener("message", (event) =>
@@ -116,8 +127,15 @@ function main()
 
         switch (message.command)
         {
-            case "SignInSectionLoaded":
-
+            case "UpdateSignInSection":
+                if (message.foundGithubAccountNames.length > 0)
+                {
+                    accountSelectionContainer.style["display"] = "block";
+                }
+                else
+                {
+                    accountSelectionContainer.style["display"] = "none";
+                }
 
                 break;
             default:
@@ -137,11 +155,7 @@ function main()
 
     setOctokit(null);
 
-    vsCodeApi.postMessage(
-        {
-            command: "SignInSectionLoaded"
-        }
-    );
+    updateAccountSelectionContainer();
 }
 
 const vsCodeApi = acquireVsCodeApi();
