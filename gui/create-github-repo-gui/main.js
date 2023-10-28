@@ -137,6 +137,23 @@ function main()
                     accountSelectionContainer.style["display"] = "none";
                 }
 
+                for (let currentChildIndex = 0; currentChildIndex < githubAccountSelectInput.children.length; currentChildIndex++)
+                {
+                    if (githubAccountSelectInput.children[currentChildIndex].innerText != DEFAULT_GITHUB_ACCOUNT_SELECT_INPUT_OPTION)
+                    {
+                        githubAccountSelectInput.removeChild(githubAccountSelectInput.children[currentChildIndex]);
+                    }
+                }
+
+                message.foundGithubAccountNames.forEach((foundGithubAccountName) =>
+                {
+                    let newOption = document.createElement("option");
+
+                    newOption.innerText = foundGithubAccountName;
+
+                    githubAccountSelectInput.appendChild(newOption);
+                });
+
                 break;
             default:
                 break;
@@ -158,9 +175,9 @@ function main()
     updateAccountSelectionContainer();
 }
 
-const vsCodeApi = acquireVsCodeApi();
+const DEFAULT_GITHUB_ACCOUNT_SELECT_INPUT_OPTION = "Please select a Github account...";
 
-let octokit = null;
+const vsCodeApi = acquireVsCodeApi();
 
 const createRepoButton = document.getElementById("createRepoButton");
 
@@ -183,6 +200,10 @@ const logoutButton = document.getElementById("logoutButton");
 const closeSignInPanelButton = document.getElementById("closeSignInPanelButton");
 
 const accountSelectionContainer = document.getElementById("accountSelectionContainer");
+
+const githubAccountSelectInput = document.getElementById("githubAccountSelectInput");
+
+let octokit = null;
 
 main();
 
