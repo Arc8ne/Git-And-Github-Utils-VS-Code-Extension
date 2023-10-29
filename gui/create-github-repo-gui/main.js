@@ -140,6 +140,15 @@ function updateAccountSelectionContainer()
     );
 }
 
+function onOAuthLoginBtnClick()
+{
+    vsCodeApi.postMessage(
+        {
+            command: "OAuthLogin"
+        }
+    );
+}
+
 function main()
 {
     window.addEventListener("message", (event) =>
@@ -201,6 +210,8 @@ function main()
 
     closeSignInPanelButton.addEventListener("click", onCloseSignInPanelButtonClick);
 
+    oAuthLoginBtn.addEventListener("click", onOAuthLoginBtnClick);
+
     setOctokit(null);
 
     updateAccountSelectionContainer();
@@ -233,6 +244,8 @@ const closeSignInPanelButton = document.getElementById("closeSignInPanelButton")
 const accountSelectionContainer = document.getElementById("accountSelectionContainer");
 
 const githubAccountSelectInput = document.getElementById("githubAccountSelectInput");
+
+const oAuthLoginBtn = document.getElementById("oAuthLoginBtn");
 
 let octokit = null;
 

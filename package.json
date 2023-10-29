@@ -41,6 +41,7 @@
   "publisher": "Arc8ne",
   "dependencies": {
     "@vscode/webview-ui-toolkit": "^1.2.2",
-    "ssh-keygen": "^0.5.0"
+    "octokit": "^3.1.1",
+    "open": "^9.1.0"
   }
 }

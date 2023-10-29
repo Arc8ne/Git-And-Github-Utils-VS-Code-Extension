@@ -6,13 +6,32 @@ const fs = require("fs");
 
 const childProcess = require("child_process");
 
-const sshKeygen = require("ssh-keygen");
+const http = require("http");
+
+const https = require("https");
+
+const { Octokit } = require("@octokit/core");
+
+const { createOAuthUserAuth } = require("@octokit/auth-oauth-user");
+
+const DEFAULT_HTTP_PORT = 80;
+
+const DEFAULT_HTTPS_PORT = 443;
 
 const currentVersion = "0.1.0";
 
+// Stores the "open" module which is loaded using a dynamic import instead of the standard require statement.
+let open = null;
+
+let appVars = null;
+
 let extensionDataDirAbsolutePath = "";
 
+let appVarsFileAbsolutePath = "";
+
 let githubAccountsDirAbsolutePath = "";
+
+let octokit = null;
 
 function getAbsoluteFilePath(relativePathToResourceFromExtensionDir, context)
 {
@@ -65,19 +84,30 @@ function generateSSHKeyPairForGithubAccount(githubAccountName, options)
 	);
 }
 
+async function loadModules()
+{
+	open = await import("open");
+}
+
 // This method is called when your extension is activated
 // Your extension is activated the very first time the command is executed
 /**
  * @param {vscode.ExtensionContext} context
  */
-function activate(context) {
-	extensionDataDirAbsolutePath = context.extensionPath + "/extension-data";
-
-	githubAccountsDirAbsolutePath = extensionDataDirAbsolutePath + "/github-accounts";
+async function activate(context) {
+	await loadModules();
 
 	// Use the console to output diagnostic information (console.log) and errors (console.error)
 	// This line of code will only be executed once when your extension is activated
 	console.log('The extension "git-and-github-utilities" is now active!');
+
+	extensionDataDirAbsolutePath = context.extensionPath + "/extension-data";
+
+	appVarsFileAbsolutePath = extensionDataDirAbsolutePath + "/app-vars.json";
+
+	githubAccountsDirAbsolutePath = extensionDataDirAbsolutePath + "/github-accounts";
+
+	appVars = JSON.parse(fs.readFileSync(appVarsFileAbsolutePath));
 
 	if (fs.existsSync(extensionDataDirAbsolutePath) == false)
 	{
@@ -212,6 +242,53 @@ function activate(context) {
 							);
 						}
 					});
+
+					break;
+				}
+				case "OAuthLogin":
+				{
+					let hostName = "127.0.0.1";
+
+					let port = 3000;
+
+					let httpServer = http.createServer((request, response) =>
+					{
+						let receivedCode = request.url.replace("/?code=", "");
+
+						octokit = new Octokit(
+							{
+								authStrategy: createOAuthUserAuth,
+								auth: {
+									clientId: appVars.clientID,
+									clientSecret: appVars.clientSecret,
+									code: receivedCode
+								}
+							}
+						);
+
+						response.writeHead(
+							200,
+							"Success",
+							{
+								"content-type": "text/html"
+							}
+						);
+
+						response.write(
+							fs.readFileSync(context.extensionPath + "/gui/github-oauth-redirect-webpage/index.html", "utf8")
+						);
+
+						response.end();
+
+						httpServer.close();
+					});
+
+					httpServer.listen(port, hostName, () =>
+					{
+
+					});
+
+					open.default("https://github.com/login/oauth/authorize?client_id=" + appVars.clientID);
 
 					break;
 				}
