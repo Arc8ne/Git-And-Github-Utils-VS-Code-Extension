@@ -150,7 +150,7 @@ async function activate(context) {
 			}
 		);
 
-		createGithubRepoWebviewPanel.webview.onDidReceiveMessage((message) =>
+		createGithubRepoWebviewPanel.webview.onDidReceiveMessage(async (message) =>
 		{
 			switch (message.command)
 			{
@@ -220,11 +220,31 @@ async function activate(context) {
 
 					break;
 				}
+				case "LoginUsingPersonalAccessToken":
+				{
+					octokit = new Octokit(
+						{
+							auth: message.personalAccessToken
+						}
+					);
+
+					let userInfo = await octokit.request("GET /user");
+
+					createGithubRepoWebviewPanel.webview.postMessage(
+						{
+							command: "PersonalAccessTokenLoginSuccessful",
+							userName: userInfo.data.login,
+							avatarImgSrc: userInfo.data.avatar_url
+						}
+					);
+
+					break;
+				}
 				case "LoginToCachedGithubAccount":
 				{
 					let githubAccountDirs = fs.readdirSync(githubAccountsDirAbsolutePath);
 					
-					githubAccountDirs.forEach((githubAccountDirName) =>
+					githubAccountDirs.forEach(async (githubAccountDirName) =>
 					{
 						if (githubAccountDirName == message.githubAccountUserName)
 						{
@@ -234,10 +254,19 @@ async function activate(context) {
 								)
 							);
 
+							octokit = new Octokit(
+								{
+									auth: githubAccountInfo.personalAccessToken
+								}
+							);
+
+							let userInfo = await octokit.request("GET /user");
+
 							createGithubRepoWebviewPanel.webview.postMessage(
 								{
-									command: "LoginToCachedGithubAccountResponse",
-									personalAccessToken: githubAccountInfo.personalAccessToken
+									command: "OAuthOrCachedGithubAccountLoginSuccessful",
+									userName: userInfo.data.login,
+									avatarImgSrc: userInfo.data.avatar_url
 								}
 							);
 						}
@@ -251,7 +280,7 @@ async function activate(context) {
 
 					let port = 3000;
 
-					let httpServer = http.createServer((request, response) =>
+					let httpServer = http.createServer(async (request, response) =>
 					{
 						let receivedCode = request.url.replace("/?code=", "");
 
@@ -263,6 +292,16 @@ async function activate(context) {
 									clientSecret: appVars.clientSecret,
 									code: receivedCode
 								}
+							}
+						);
+
+						let userInfo = await octokit.request("GET /user");
+
+						createGithubRepoWebviewPanel.webview.postMessage(
+							{
+								command: "OAuthOrCachedGithubAccountLoginSuccessful",
+								userName: userInfo.data.login,
+								avatarImgSrc: userInfo.data.avatar_url
 							}
 						);
 

@@ -1,19 +1,3 @@
-import { Octokit, App } from "https://esm.sh/octokit";
-
-function setOctokit(value)
-{
-    octokit = value;
-
-    if (octokit == null)
-    {
-        createRepoButton.disabled = true;
-    }
-    else
-    {
-        createRepoButton.disabled = false;
-    }
-}
-
 function onCreateRepoButtonClick()
 {
     createRepoButton.disabled = true;
@@ -47,14 +31,7 @@ function onSignInButtonClick()
 
 async function login(personalAccessToken)
 {
-    setOctokit(
-        new Octokit(
-            {
-                auth: personalAccessToken
-            }
-        )
-    );
-
+    /*
     let userPublicInfo = null;
 
     try
@@ -63,8 +40,6 @@ async function login(personalAccessToken)
     }
     catch (e)
     {
-        setOctokit(null);
-
         vsCodeApi.postMessage(
             {
                 command: "ShowInfoMsg",
@@ -74,35 +49,19 @@ async function login(personalAccessToken)
 
         return;
     }
-
-    vsCodeApi.postMessage(
-        {
-            command: "OnGithubAccountLoggedInTo",
-            userName: userPublicInfo.data.login,
-            personalAccessToken: personalAccessToken
-        }
-    );
-
-    signedInAsLabel.innerText = "Signed in as " + userPublicInfo.data.login;
-
-    signedInUserProfileImage.src = userPublicInfo.data.avatar_url;
-
-    updateAccountSelectionContainer();
-
-    signInPanel.style["display"] = "none";
-
-    signInInfoContainer.style["display"] = "flex";
+    */
 }
 
 function onLoginButtonClick()
-{
-    let personalAccessTokenToUse = "";
-    
+{   
     if (githubAccountSelectInput.options[githubAccountSelectInput.options.selectedIndex].text == DEFAULT_GITHUB_ACCOUNT_SELECT_INPUT_OPTION)
     {
-        personalAccessTokenToUse = personalAccessTokenInput.value;
-
-        login(personalAccessTokenToUse);
+        vsCodeApi.postMessage(
+            {
+                command: "LoginUsingPersonalAccessToken",
+                personalAccessToken: personalAccessTokenInput.value
+            }
+        );
     }
     else
     {
@@ -117,8 +76,6 @@ function onLoginButtonClick()
 
 function onLogoutButtonClick()
 {
-    setOctokit(null);
-
     signInInfoContainer.style["display"] = "none";
 
     signInButton.style["display"] = "block";
@@ -187,9 +144,37 @@ function main()
 
                 break;
             }
-            case "LoginToCachedGithubAccountResponse":
+            case "PersonalAccessTokenLoginSuccessful":
             {
-                login(message.personalAccessToken);
+                vsCodeApi.postMessage(
+                    {
+                        command: "OnGithubAccountLoggedInTo",
+                        userName: userPublicInfo.data.login,
+                        personalAccessToken: personalAccessTokenInput.value
+                    }
+                );
+
+                signedInAsLabel.innerText = "Signed in as " + message.userName;
+            
+                signedInUserProfileImage.src = message.avatarImgSrc;
+            
+                updateAccountSelectionContainer();
+            
+                signInPanel.style["display"] = "none";
+            
+                signInInfoContainer.style["display"] = "flex";
+
+                break;
+            }
+            case "OAuthOrCachedGithubAccountLoginSuccessful":
+            {
+                signedInAsLabel.innerText = "Signed in as " + message.userName;
+
+                signedInUserProfileImage.src = message.avatarImgSrc;
+
+                signInPanel.style["display"] = "none";
+
+                signInInfoContainer.style["display"] = "flex";
 
                 break;
             }
@@ -211,8 +196,6 @@ function main()
     closeSignInPanelButton.addEventListener("click", onCloseSignInPanelButtonClick);
 
     oAuthLoginBtn.addEventListener("click", onOAuthLoginBtnClick);
-
-    setOctokit(null);
 
     updateAccountSelectionContainer();
 }
@@ -246,8 +229,6 @@ const accountSelectionContainer = document.getElementById("accountSelectionConta
 const githubAccountSelectInput = document.getElementById("githubAccountSelectInput");
 
 const oAuthLoginBtn = document.getElementById("oAuthLoginBtn");
-
-let octokit = null;
 
 main();
 
