@@ -327,13 +327,16 @@ async function activate(context) {
 
 					});
 
+					// Opening a private browser window (testing was done for Firefox only so far) allows the user to log into another
+					// Github account manually instead of the browser automatically logging in to their last used Github account.
 					if (message.userName != "")
 					{
 						open.default(
 							"https://github.com/login/oauth/authorize?client_id=" + appVars.clientID + "&login=" + message.userName,
 							{
 								app: {
-									name: open.apps.firefox
+									name: open.apps.firefox,
+									arguments: ["-private-window"]
 								}
 							}
 						);
@@ -344,7 +347,8 @@ async function activate(context) {
 							"https://github.com/login/oauth/authorize?client_id=" + appVars.clientID,
 							{
 								app: {
-									name: open.apps.firefox
+									name: open.apps.firefox,
+									arguments: ["-private-window"]
 								}
 							}
 						);
