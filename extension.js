@@ -327,7 +327,28 @@ async function activate(context) {
 
 					});
 
-					open.default("https://github.com/login/oauth/authorize?client_id=" + appVars.clientID);
+					if (message.userName != "")
+					{
+						open.default(
+							"https://github.com/login/oauth/authorize?client_id=" + appVars.clientID + "&login=" + message.userName,
+							{
+								app: {
+									name: open.apps.firefox
+								}
+							}
+						);
+					}
+					else
+					{
+						open.default(
+							"https://github.com/login/oauth/authorize?client_id=" + appVars.clientID,
+							{
+								app: {
+									name: open.apps.firefox
+								}
+							}
+						);
+					}
 
 					break;
 				}

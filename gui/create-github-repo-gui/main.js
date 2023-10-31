@@ -101,7 +101,8 @@ function onOAuthLoginBtnClick()
 {
     vsCodeApi.postMessage(
         {
-            command: "OAuthLogin"
+            command: "OAuthLogin",
+            userName: userNameInput.value
         }
     );
 }
@@ -229,6 +230,8 @@ const accountSelectionContainer = document.getElementById("accountSelectionConta
 const githubAccountSelectInput = document.getElementById("githubAccountSelectInput");
 
 const oAuthLoginBtn = document.getElementById("oAuthLoginBtn");
+
+const userNameInput = document.getElementById("userNameInput");
 
 main();
 

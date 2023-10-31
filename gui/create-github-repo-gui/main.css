@@ -18,6 +18,13 @@ h1 {
     column-gap: 10px;
 }
 
+.input-grid > input[type="checkbox"] {
+    margin-left: 0px;
+    margin-right: auto;
+    margin-top: auto;
+    margin-bottom: auto;
+}
+
 .main-body {
     display: flex;
     flex-direction: column;
@@ -26,10 +33,6 @@ h1 {
 
 .create-button {
     align-self: self-start;
-}
-
-.input-grid-checkbox {
-    justify-self: left;
 }
 
 .header {

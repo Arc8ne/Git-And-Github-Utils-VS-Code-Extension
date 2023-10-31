@@ -19,6 +19,22 @@
                 <button id="signInButton" class="sign-in-button vscode-button">Sign in to a Github account</button>
 
                 <div id="signInPanel" class="sign-in-panel">
+                    <div class="input-grid">
+                        <p>Username:</p>
+
+                        <input id="userNameInput" class="vscode-text-field"/>
+
+                        <p>Open in private/incognito window</p>
+
+                        <input type="checkbox" class="vscode-combo-box"/>
+                    </div>
+
+                    <!-- TODO: Fix checkboxes not being vertically centered properly. -->
+                    <label style="display: flex; align-items: center; font-size: 18px;">
+                        Checkbox:
+                        <input style="vertical-align: middle;" type="checkbox"/>
+                    </label>
+
                     <button id="oAuthLoginBtn" class="vscode-button">Log in using OAuth</button>
 
                     <table width="100%">
@@ -98,7 +114,7 @@
 
                 <p>Add a README.md file?</p>
 
-                <input type="checkbox" class="input-grid-checkbox"/>
+                <input type="checkbox"/>
             </div>
 
             <button id="createRepoButton" class="vscode-button create-button">Create</button>
