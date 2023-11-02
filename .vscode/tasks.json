@@ -4,7 +4,17 @@
         {
             "label": "build-custom-html-elements",
             "type": "shell",
-            "command": "csshtml-module -i custom-html-elements/github-account-panel/main.html -o webview-libs/github-account-panel-html.js"
+            "command": "csshtml-module -i custom-html-elements/github-account-panel/main.html -o webview-libs/github-account-panel-html.js",
+            "presentation": {
+                "echo": false,
+                "reveal": "never",
+                "revealProblems": "onProblem",
+                "focus": false,
+                "panel": "shared",
+                "showReuseMessage": false,
+                "clear": false,
+                "close": true
+            }
         }
     ]
 }
