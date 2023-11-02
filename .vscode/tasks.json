@@ -1,0 +1,10 @@
+{
+    "version": "2.0.0",
+    "tasks": [
+        {
+            "label": "build-custom-html-elements",
+            "type": "shell",
+            "command": "csshtml-module -i custom-html-elements/github-account-panel/main.html -o webview-libs/github-account-panel-html.js"
+        }
+    ]
+}

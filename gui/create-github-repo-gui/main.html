@@ -1,6 +1,8 @@
 <html>
     <head>
         <link rel="stylesheet" type="text/css" href="${mainCSSFileUri}"/>
+
+        <script type="module" src="${customComponentsWebviewLibUri}"></script>
     </head>
 
     <body>
@@ -8,6 +10,9 @@
             <div class="header">
                 <h1>Create a Github repository</h1>
 
+                <github-account-panel style="margin-left: auto;"></github-account-panel>
+
+                <!--
                 <div id="signInInfoContainer" class="signed-in-info-container">
                     <img id="signedInUserProfileImage" class="signed-in-user-profile-image"/>
 
@@ -24,16 +29,20 @@
 
                         <input id="userNameInput" class="vscode-text-field"/>
 
+                        <p>Browser to open login prompt in:</p>
+
+                        <select class="vscode-combo-box">
+                            <option>Microsoft Edge</option>
+
+                            <option>Google Chrome</option>
+
+                            <option>Mozilla Firefox</option>
+                        </select>
+
                         <p>Open in private/incognito window</p>
 
-                        <input type="checkbox" class="vscode-combo-box"/>
+                        <input type="checkbox"/>
                     </div>
-
-                    <!-- TODO: Fix checkboxes not being vertically centered properly. -->
-                    <label style="display: flex; align-items: center; font-size: 18px;">
-                        Checkbox:
-                        <input style="vertical-align: middle;" type="checkbox"/>
-                    </label>
 
                     <button id="oAuthLoginBtn" class="vscode-button">Log in using OAuth</button>
 
@@ -93,6 +102,7 @@
                         <button id="closeSignInPanelButton" class="vscode-button">Close</button>
                     </div>
                 </div>
+                -->
             </div>
 
             <div class="input-grid">

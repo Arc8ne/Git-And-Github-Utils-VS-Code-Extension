@@ -145,8 +145,21 @@ async function activate(context) {
 			"/gui/create-github-repo-gui/main.html",
 			context,
 			{
-				"${mainCSSFileUri}": getWebviewUri("/gui/create-github-repo-gui/main.css", createGithubRepoWebviewPanel.webview, context),
-				"${mainJSFileUri}": getWebviewUri("/gui/create-github-repo-gui/main.js", createGithubRepoWebviewPanel.webview, context)
+				"${mainCSSFileUri}": getWebviewUri(
+					"/gui/create-github-repo-gui/main.css",
+					createGithubRepoWebviewPanel.webview,
+					context
+				),
+				"${mainJSFileUri}": getWebviewUri(
+					"/gui/create-github-repo-gui/main.js",
+					createGithubRepoWebviewPanel.webview,
+					context
+				),
+				"${customComponentsWebviewLibUri}": getWebviewUri(
+					"/webview-libs/custom-components.js",
+					createGithubRepoWebviewPanel.webview,
+					context
+				)
 			}
 		);
 
